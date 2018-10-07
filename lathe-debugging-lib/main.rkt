@@ -25,7 +25,12 @@
 
 
 (define (dlog-fn args body)
-  (let ([line (map (lambda (arg) (format " ~a" arg)) args)])
+  (let
+    (
+      [
+        line
+        (apply string-append
+          (map (lambda (arg) (format " ~a" arg)) args))])
     (displayln (format "/~a" line))
     (begin0 (body)
       (displayln (format "\\~a" line)))))
