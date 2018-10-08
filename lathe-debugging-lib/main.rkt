@@ -24,16 +24,22 @@
 
 
 
+(define nesting-indentation (make-parameter ""))
+
 (define (dlog-fn args body)
   (let
     (
+      [indent (nesting-indentation)]
       [
         line
         (apply string-append
           (map (lambda (arg) (format " ~a" arg)) args))])
-    (displayln (format "/~a" line))
-    (begin0 (body)
-      (displayln (format "\\~a" line)))))
+    (displayln (format "~a\\~a" indent line))
+    (begin0
+      (parameterize
+        ([nesting-indentation (string-append indent "  ")])
+        (body))
+      (displayln (format "~a/~a" indent line)))))
 
 (define-syntax-rule (dlog arg ... body)
   (dlog-fn (list arg ...) (lambda () body)))

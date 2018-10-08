@@ -37,8 +37,10 @@ Lathe Debugging for Racket is a collection of utilities that are handy for debug
 @defmodule[lathe-debugging]
 
 @defform[
-  (log value ...
+  (dlog value ...
     body)
 ]{
-  Collects the results of the given @racket[value] expressions; logs one line to @racket[(current-output-port)] consisting of the character "/" followed by those results, separated by spaces; runs the given @racket[body] expression; logs another line like the first but using "\" instead of "/"; and returns the result of the @racket[body].
+  Collects the results of the given @racket[value] expressions; logs one line to @racket[(current-output-port)] consisting of indentation, the character "\", and those results preceded by spaces; runs the given @racket[body] expression; logs another line like the first but using "/" instead of "\"; and returns the result of the @racket[body].
+  
+  Within the dynamic extent of the body, the indentation used for other @tt{dlog} calls is increased by two spaces. Initially, no indentation is used.
 }
