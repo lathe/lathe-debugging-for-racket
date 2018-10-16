@@ -20,27 +20,44 @@
 
 
 (provide
-  dlog)
+  dlog
+  dlogr)
 
 
 
 (define nesting-indentation (make-parameter ""))
 
+(define (w/indent body)
+  (let ([indent (nesting-indentation)])
+    (parameterize ([nesting-indentation (string-append indent "  ")])
+      (body indent))))
+
+
+(define (spaced-list lst)
+  (apply string-append (map (lambda (elem) (format " ~a" elem)) lst)))
+
+
 (define (dlog-fn args body)
-  (let
-    (
-      [indent (nesting-indentation)]
-      [
-        line
-        (apply string-append
-          (map (lambda (arg) (format " ~a" arg)) args))])
-    (displayln (format "~a\\~a" indent line))
-    (begin0
-      (parameterize
-        ([nesting-indentation (string-append indent "  ")])
-        (body))
-      (displayln (format "~a/~a" indent line)))))
+  (w/indent
+    (lambda (indent)
+      (let ([line (spaced-list args)])
+        (displayln (format "~a\\~a" indent line))
+        (begin0
+          (body)
+          (displayln (format "~a/~a" indent line)))))))
 
 (define-syntax-rule (dlog arg ... body)
   (dlog-fn (list arg ...) (lambda () body)))
 
+
+(define (dlogr-fn args body)
+  (w/indent
+    (lambda (indent)
+      (let ([line (spaced-list args)])
+        (displayln (format "~a\\~a" indent line))
+        (let ([result (body)])
+          (displayln (format "~a/~a = ~a" indent line result))
+          result)))))
+
+(define-syntax-rule (dlogr arg ... body)
+  (dlogr-fn (list arg ...) (lambda () body)))
