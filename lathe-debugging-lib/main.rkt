@@ -40,11 +40,11 @@
 (define (dlog-fn args body)
   (w/indent
     (lambda (indent)
-      (let ([line (spaced-list args)])
-        (displayln (format "~a\\~a" indent line))
-        (begin0
-          (body)
-          (displayln (format "~a/~a" indent line)))))))
+      (define line (spaced-list args))
+      (displayln (format "~a\\~a" indent line))
+      (begin0
+        (body)
+        (displayln (format "~a/~a" indent line))))))
 
 (define-syntax-rule (dlog arg ... body)
   (dlog-fn (list arg ...) (lambda () body)))
@@ -53,11 +53,12 @@
 (define (dlogr-fn args body)
   (w/indent
     (lambda (indent)
-      (let ([line (spaced-list args)])
-        (displayln (format "~a\\~a" indent line))
-        (let ([result (body)])
-          (displayln (format "~a/~a = ~a" indent line result))
-          result)))))
+      (define line (spaced-list args))
+      (displayln (format "~a\\~a" indent line))
+      (define results (call-with-values body list))
+      (define results-line (spaced-list results))
+      (displayln (format "~a/~a =~a" indent line results-line))
+      (apply values results))))
 
 (define-syntax-rule (dlogr arg ... body)
   (dlogr-fn (list arg ...) (lambda () body)))

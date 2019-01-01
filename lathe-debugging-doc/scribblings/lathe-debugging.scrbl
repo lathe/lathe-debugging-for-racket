@@ -40,7 +40,7 @@ Lathe Debugging for Racket is a collection of utilities that are handy for debug
   (dlog value ...
     body)
 ]{
-  Collects the results of the given @racket[value] expressions; logs one line to @racket[(current-output-port)] consisting of indentation, the character "@tt{\}", and those results preceded by spaces; computes the result of the given @racket[body] expression; logs another line like the first but using "@tt{/}" instead of "@tt{\}"; and returns the computed result.
+  Collects the results of the given @racket[value] expressions; logs one line to @racket[(current-output-port)] consisting of indentation, the character "@tt{\}", and those results preceded by spaces; computes the return values of the given @racket[body] expression; logs another line like the first but using "@tt{/}" instead of "@tt{\}"; and returns the computed return values.
   
   Within the dynamic extent of the body, the indentation used for other @tt{dlog} or @racket[dlogr] calls is increased by two spaces. Initially, no indentation is used.
 }
@@ -49,7 +49,7 @@ Lathe Debugging for Racket is a collection of utilities that are handy for debug
   (dlogr value ...
     body)
 ]{
-  Collects the results of the given @racket[value] expressions; logs one line to @racket[(current-output-port)] consisting of indentation, the character "@tt{\}", and those results preceded by spaces; computes the result of the given @racket[body] expression; logs another line like the first but using "@tt{/}" instead of "@tt{\}" and appending "@tt{ => }" and the computed result; and returns the computed result.
+  Collects the results of the given @racket[value] expressions; logs one line to @racket[(current-output-port)] consisting of indentation, the character "@tt{\}", and those results preceded by spaces; computes the return values of the given @racket[body] expression; logs another line like the first but using "@tt{/}" instead of "@tt{\}" and appending "@tt{ = }" and the computed return values; and returns the computed return values.
   
   Within the dynamic extent of the body, the indentation used for other @racket[dlog] or @tt{dlogr} calls is increased by two spaces. Initially, no indentation is used.
 }
