@@ -37,11 +37,40 @@
   (apply string-append (map (lambda (elem) (format " ~a" elem)) lst)))
 
 
-(define (dlog-fn args body)
+(define (dlog-shared-fn args body)
   (w/indent
     (lambda (indent)
       (define line (spaced-list args))
+      (define recently-entered #f)
+      (define recently-exited #f)
       (displayln (format "~a\\~a" indent line))
+      (set! recently-entered #t)
+      (dynamic-wind
+        (lambda ()
+          (unless recently-entered
+            (displayln (format "~a\\[wind]~a" indent line)))
+          (set! recently-entered #f))
+        (lambda ()
+          (with-handlers
+            (
+              [
+                (lambda (e) #t)
+                (lambda (e)
+                  (displayln (format "~a/[exn]~a" indent line))
+                  (set! recently-exited #t)
+                  (raise e))])
+            (begin0
+              (body indent line)
+              (set! recently-exited #t))))
+        (lambda ()
+          (unless recently-exited
+            (displayln (format "~a/[wind]~a" indent line)))
+          (set! recently-exited #f))))))
+
+
+(define (dlog-fn args body)
+  (dlog-shared-fn args
+    (lambda (indent line)
       (begin0
         (body)
         (displayln (format "~a/~a" indent line))))))
@@ -51,10 +80,8 @@
 
 
 (define (dlogr-fn args body)
-  (w/indent
-    (lambda (indent)
-      (define line (spaced-list args))
-      (displayln (format "~a\\~a" indent line))
+  (dlog-shared-fn args
+    (lambda (indent line)
       (define results (call-with-values body list))
       (define results-line (spaced-list results))
       (displayln (format "~a/~a =~a" indent line results-line))
