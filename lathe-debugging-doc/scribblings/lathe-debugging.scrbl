@@ -53,3 +53,25 @@ Lathe Debugging for Racket is a collection of utilities that are handy for debug
   
   Within the dynamic extent of the body, the indentation used for other @racket[dlog] or @tt{dlogr} calls is increased by two spaces. Initially, no indentation is used.
 }
+
+
+
+@section[#:tag "placebo"]{Placebos of debugging utilities}
+
+@defmodule[lathe-debugging/placebo]
+
+This is a module that imitates @racketmodname[lathe-debugging] but doesn't actually log anything or even execute certain expressions. By replacing an import of @racketmodname[lathe-debugging] with @racketmodname[lathe-debugging/placebo], it's easy to check whether the debug logging logic is bogging down the run time performance of the program.
+
+@defform[
+  (dlog value ...
+    body)
+]{
+  Runs the @racket[body] expression. Does nothing with the @racket[value] expressions.
+}
+
+@defform[
+  (dlogr value ...
+    body)
+]{
+  Runs the @racket[body] expression. Does nothing with the @racket[value] expressions.
+}
