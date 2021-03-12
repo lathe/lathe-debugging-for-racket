@@ -1,6 +1,6 @@
 # Lathe Debugging for Racket
 
-[![Travis build](https://travis-ci.org/lathe/lathe-debugging-for-racket.svg?branch=master)](https://travis-ci.org/lathe/lathe-debugging-for-racket)
+[![Travis build](https://travis-ci.org/lathe/lathe-debugging-for-racket.svg?branch=main)](https://travis-ci.org/lathe/lathe-debugging-for-racket)
 
 Lathe Debugging for Racket is a small collection of utilities that are handy for debugging Racket code. This is a very ad hoc library, and the interface is subject to change.
 
