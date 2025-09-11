@@ -4,7 +4,11 @@
 
 (define deps (list "base"))
 (define build-deps
-  (list "lathe-debugging-lib" "racket-doc" "scribble-lib"))
+  (list
+    "lathe-comforts-doc"
+    "lathe-debugging-lib"
+    "racket-doc"
+    "scribble-lib"))
 
 (define scribblings
   (list (list "scribblings/lathe-debugging.scrbl" (list))))

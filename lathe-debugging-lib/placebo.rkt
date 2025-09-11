@@ -4,7 +4,7 @@
 ;
 ; Placebos of debugging utilities.
 
-;   Copyright 2020 The Lathe Authors
+;   Copyright 2020, 2025 The Lathe Authors
 ;
 ;   Licensed under the Apache License, Version 2.0 (the "License");
 ;   you may not use this file except in compliance with the License.
@@ -19,13 +19,23 @@
 ;   language governing permissions and limitations under the License.
 
 
+(require
+  (for-syntax
+    racket/base
+    (only-in syntax/parse expr this-syntax)
+    lathe-debugging/private/autoptic)
+  (only-in syntax/parse/define define-syntax-parse-rule))
+
+
 (provide
   dlog
   dlogr)
 
 
-(define-syntax-rule (dlog arg ... body)
+(define-syntax-parse-rule (dlog arg:expr ... body:expr)
+  #:when (autoptic-list-to? this-syntax this-syntax)
   body)
 
-(define-syntax-rule (dlogr arg ... body)
+(define-syntax-parse-rule (dlogr arg:expr ... body:expr)
+  #:when (autoptic-list-to? this-syntax this-syntax)
   body)

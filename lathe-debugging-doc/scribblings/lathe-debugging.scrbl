@@ -4,7 +4,7 @@
 @;
 @; Debugging utilities.
 
-@;   Copyright 2018, 2019 The Lathe Authors
+@;   Copyright 2018-2020, 2025 The Lathe Authors
 @;
 @;   Licensed under the Apache License, Version 2.0 (the "License");
 @;   you may not use this file except in compliance with the License.
@@ -20,6 +20,16 @@
 
 
 @(require (for-label lathe-debugging))
+
+
+@(define lathe-comforts-doc
+  '(lib "lathe-comforts/scribblings/lathe-comforts.scrbl"))
+
+
+@(define @enforces-autopticity[]
+  @list{
+    This syntax must be called with @tech[#:doc lathe-comforts-doc]{autopticity}. An occurrence of a cons cell, empty list, or keyword that's part of the call syntax must have a set of scopes that's equal to or a superset of the set of scopes on the entire call, as though the call has created a local binding of what a cons cell means in these positions. This helps ensure that even though Racket expressions are often made of cons cells, an expression inserted into one of these positions by a macro's syntax template will not have its cons cells misinterpreted.
+  })
 
 
 @title{Lathe Debugging}
@@ -43,6 +53,8 @@ Lathe Debugging for Racket is a collection of utilities that are handy for debug
   Collects the results of the given @racket[value] expressions; logs one line to @racket[(current-output-port)] consisting of indentation, the character "@tt{\}", and those results preceded by spaces; computes the return values of the given @racket[body] expression; logs another line like the first but using "@tt{/}" instead of "@tt{\}"; and returns the computed return values.
   
   Within the dynamic extent of the body, the indentation used for other @tt{dlog} or @racket[dlogr] calls is increased by two spaces. Initially, no indentation is used.
+  
+  @enforces-autopticity[]
 }
 
 @defform[
@@ -52,6 +64,8 @@ Lathe Debugging for Racket is a collection of utilities that are handy for debug
   Collects the results of the given @racket[value] expressions; logs one line to @racket[(current-output-port)] consisting of indentation, the character "@tt{\}", and those results preceded by spaces; computes the return values of the given @racket[body] expression; logs another line like the first but using "@tt{/}" instead of "@tt{\}" and appending "@tt{ = }" and the computed return values; and returns the computed return values.
   
   Within the dynamic extent of the body, the indentation used for other @racket[dlog] or @tt{dlogr} calls is increased by two spaces. Initially, no indentation is used.
+  
+  @enforces-autopticity[]
 }
 
 
@@ -67,6 +81,8 @@ This is a module that imitates @racketmodname[lathe-debugging] but doesn't actua
     body)
 ]{
   Runs the @racket[body] expression. Does nothing with the @racket[value] expressions.
+  
+  @enforces-autopticity[]
 }
 
 @defform[
@@ -74,4 +90,6 @@ This is a module that imitates @racketmodname[lathe-debugging] but doesn't actua
     body)
 ]{
   Runs the @racket[body] expression. Does nothing with the @racket[value] expressions.
+  
+  @enforces-autopticity[]
 }
